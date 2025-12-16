@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Exam System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-blue: #3b82f6;
+            --blue-light: #dbeafe;
+            --blue-dark: #1d4ed8;
+            --primary-green: #10b981;
+            --green-light: #d1fae5;
+            --green-dark: #047857;
+            --primary-purple: #8b5cf6;
+            --purple-light: #ede9fe;
+            --purple-dark: #6d28d9;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --red-100: #fee2e2;
+            --red-500: #ef4444;
+            --red-800: #991b1b;
+            --yellow-50: #fffbeb;
+            --yellow-800: #92400e;
+        }
+
+        body {
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+            min-height: 100vh;
+            padding: 1rem;
+            color: var(--gray-800);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .header h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .header h1 i {
+            color: var(--primary-blue);
+        }
+
+        .subtitle {
+            color: var(--gray-600);
+            font-size: 1.125rem;
+        }
+
+        .course-info {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-top: 0.5rem;
+        }
+
+        /* Sheets */
+        .sheet {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .sheet-header {
+            width: 100%;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .sheet-header:hover {
+            background-color: var(--gray-50);
+        }
+
+        .sheet-header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .sheet-number {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .sheet-1 .sheet-number {
+            background-color: var(--blue-light);
+            color: var(--primary-blue);
+        }
+
+        .sheet-3 .sheet-number {
+            background-color: var(--green-light);
+            color: var(--primary-green);
+        }
+
+        .sheet-4 .sheet-number {
+            background-color: var(--purple-light);
+            color: var(--primary-purple);
+        }
+
+        .sheet-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+
+        .sheet-subtitle {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .sheet-content {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header {
+            width: 100%;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin-bottom: 0.5rem;
+            transition: background-color 0.2s;
+        }
+
+        .mcq-section .section-header {
+            background-color: var(--blue-light);
+        }
+
+        .mcq-section .section-header:hover {
+            background-color: #e0f2fe;
+        }
+
+        .tf-section .section-header {
+            background-color: var(--green-light);
+        }
+
+        .tf-section .section-header:hover {
+            background-color: #dcfce7;
+        }
+
+        .written-section .section-header {
+            background-color: var(--purple-light);
+        }
+
+        .written-section .section-header:hover {
+            background-color: #f3e8ff;
+        }
+
+        .section-header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-icon {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 0.375rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .mcq-section .section-icon {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .tf-section .section-icon {
+            background-color: var(--primary-green);
+            color: white;
+        }
+
+        .written-section .section-icon {
+            background-color: var(--primary-purple);
+            color: white;
+        }
+
+        .section-title {
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        /* Questions */
+        .question-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            border: 1px solid var(--gray-200);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .question-text {
+            font-weight: 500;
+            color: var(--gray-900);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        /* MCQ Options */
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--gray-200);
+            background-color: var(--gray-50);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option:hover {
+            background-color: var(--gray-100);
+        }
+
+        .option.selected {
+            background-color: var(--blue-light);
+            border-color: var(--primary-blue);
+        }
+
+        .option.correct {
+            background-color: var(--green-light);
+            border-color: var(--primary-green);
+        }
+
+        .option.incorrect {
+            background-color: var(--red-100);
+            border-color: var(--red-500);
+        }
+
+        .option input[type="radio"] {
+            margin-top: 0.25rem;
+            margin-right: 0.75rem;
+        }
+
+        /* True/False Options */
+        .tf-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .tf-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--gray-200);
+            background-color: var(--gray-50);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tf-option:hover {
+            background-color: var(--gray-100);
+        }
+
+        .tf-option.selected-true {
+            background-color: var(--blue-light);
+            border-color: var(--primary-blue);
+        }
+
+        .tf-option.selected-false {
+            background-color: var(--blue-light);
+            border-color: var(--primary-blue);
+        }
+
+        .tf-option.correct-true {
+            background-color: var(--green-light);
+            border-color: var(--primary-green);
+        }
+
+        .tf-option.correct-false {
+            background-color: var(--green-light);
+            border-color: var(--primary-green);
+        }
+
+        .tf-option.incorrect-true {
+            background-color: var(--red-100);
+            border-color: var(--red-500);
+        }
+
+        .tf-option.incorrect-false {
+            background-color: var(--red-100);
+            border-color: var(--red-500);
+        }
+
+        /* Written Answer */
+        .written-answer {
+            width: 100%;
+            min-height: 8rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--gray-300);
+            margin-bottom: 1rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+        }
+
+        .written-answer:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Buttons */
+        .check-btn {
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .check-btn:hover {
+            background-color: var(--blue-dark);
+        }
+
+        .check-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .show-solution-btn {
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .show-solution-btn:hover {
+            background-color: var(--blue-dark);
+        }
+
+        /* Result Feedback */
+        .result-feedback {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            margin-top: 0.75rem;
+            font-weight: 500;
+        }
+
+        .correct-feedback {
+            background-color: var(--green-light);
+            color: var(--green-dark);
+        }
+
+        .incorrect-feedback {
+            background-color: var(--red-100);
+            color: var(--red-800);
+        }
+
+        .correction-box {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background-color: var(--yellow-50);
+            border: 1px solid #fde68a;
+            border-radius: 0.5rem;
+        }
+
+        .correction-title {
+            font-weight: 600;
+            color: var(--yellow-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .solution-box {
+            margin-top: 0.75rem;
+            padding: 1rem;
+            background-color: var(--green-light);
+            border: 1px solid var(--primary-green);
+            border-radius: 0.5rem;
+        }
+
+        .solution-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: var(--green-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .solution-text {
+            color: var(--gray-700);
+            white-space: pre-line;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .footer p {
+            color: var(--gray-600);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer .note {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-top: 0.75rem;
+        }
+
+        /* Utility */
+        .hidden {
+            display: none !important;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .sheet-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .sheet-header-left {
+                width: 100%;
+            }
+            
+            .tf-options {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-book-open"></i> CS307 Database Systems</h1>
+            <p class="subtitle">Practice Exam - Cairo University</p>
+            <p class="course-info">Dr. Hatem Moharram - Faculty of Science, Mathematics Department</p>
+        </div>
+
+        <!-- Sheet 1: Database Systems Fundamentals -->
+        <div class="sheet sheet-1">
+            <button class="sheet-header" onclick="toggleSheet('sheet1')">
+                <div class="sheet-header-left">
+                    <div class="sheet-number">1</div>
+                    <div>
+                        <div class="sheet-title">Sheet 1: Database Systems Fundamentals</div>
+                        <div class="sheet-subtitle">48 MCQ + 54 T/F + 3 Written Questions</div>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down" id="sheet1-icon"></i>
+            </button>
+            
+            <div class="sheet-content hidden" id="sheet1-content">
+                <!-- MCQ Section -->
+                <div class="section mcq-section">
+                    <button class="section-header" onclick="toggleSection('sheet1-mcq')">
+                        <div class="section-header-left">
+                            <div class="section-icon">MCQ</div>
+                            <span class="section-title">Multiple Choice Questions (48)</span>
+                        </div>
+                        <i class="fas fa-chevron-down" id="sheet1-mcq-icon"></i>
+                    </button>
+                    
+                    <div class="hidden" id="sheet1-mcq-content">
+                        <!-- MCQ questions will be inserted here by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- True/False Section -->
+                <div class="section tf-section">
+                    <button class="section-header" onclick="toggleSection('sheet1-tf')">
+                        <div class="section-header-left">
+                            <div class="section-icon">T/F</div>
+                            <span class="section-title">True/False Questions (54)</span>
+                        </div>
+                        <i class="fas fa-chevron-down" id="sheet1-tf-icon"></i>
+                    </button>
+                    
+                    <div class="hidden" id="sheet1-tf-content">
+                        <!-- T/F questions will be inserted here by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Written Section -->
+                <div class="section written-section">
+                    <button class="section-header" onclick="toggleSection('sheet1-written')">
+                        <div class="section-header-left">
+                            <div class="section-icon">✍</div>
+                            <span class="section-title">Written Questions (3)</span>
+                        </div>
+                        <i class="fas fa-chevron-down" id="sheet1-written-icon"></i>
+                    </button>
+                    
+                    <div class="hidden" id="sheet1-written-content">
+                        <!-- Written questions will be inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sheet 3: Relational Model & SQL -->
+        <div class="sheet sheet-3">
+            <button class="sheet-header" onclick="toggleSheet('sheet3')">
+                <div class="sheet-header-left">
+                    <div class="sheet-number">3</div>
+                    <div>
+                        <div class="sheet-title">Sheet 3: Relational Model & SQL</div>
+                        <div class="sheet-subtitle">54 MCQ + 49 T/F + 13 Written Questions</div>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down" id="sheet3-icon"></i>
+            </button>
+            
+            <div class="sheet-content hidden" id="sheet3-content">
+                <!-- MCQ Section -->
+                <div class="section mcq-section">
+                    <button class="section-header" onclick="toggleSection('sheet3-mcq')">
+                        <div class="section-header-left">
+                            <div class="section-icon">MCQ</div>
+                            <span class="section-title">Multiple Choice Questions (54)</span>
+                        </div>
+                        <i class="fas fa-chevron-down" id="sheet3-mcq-icon"></i>
+                    </button>
+                    
+                    <div class="hidden" id="sheet3-mcq-content">
+                        <!-- MCQ questions will be inserted here by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- True/False Section -->
+                <div class="section tf-section">
+                    <button class="section-header" onclick="toggleSection('sheet3-tf')">
+                        <div class="section-header-left">
+                            <div class="section-icon">T/F</div>
+                            <span class="section-title">True/False Questions (49)</span>
+                        </div>
+                        <i class="fas fa-chevron-down" id="sheet3-tf-icon"></i>
+                    </button>
+                    
+                    <div class="hidden" id="sheet3-tf-content">
+                        <!-- T/F questions will be inserted here by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Written Section -->
+                <div class="section written-section">
+                    <button class="section-header" onclick="toggleSection('sheet3-written')">
+                        <div class="section-header-left">
+                            <div class="section-icon">✍</div>
+                            <span class="section-title">Written Questions (13)</span>
+                        </div>
+                        <i class="fas fa-chevron-down" id="sheet3-written-icon"></i>
+                    </button>
+                    
+                    <div class="hidden" id="sheet3-written-content">
+                        <!-- Written questions will be inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sheet 4: Relational Algebra -->
+        <div class="sheet sheet-4">
+            <button class="sheet-header" onclick="toggleSheet('sheet4')">
+                <div class="sheet-header-left">
+                    <div class="sheet-number">4</div>
+                    <div>
+                        <div class="sheet-title">Sheet 4: Relational Algebra</div>
+                        <div class="sheet-subtitle">26 MCQ + 25 T/F + 8 Written Questions</div>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down" id="sheet4-icon"></i>
+            </button>
+            
+            <div class="sheet-content hidden" id="sheet4-content">
+                <!-- MCQ Section -->
+                <div class="section mcq-section">
+                    <button class="section-header" onclick="toggleSection('sheet4-mcq')">
+                        <div class="section-header-left">
+                            <div class="section-icon">MCQ</div>
+                            <span class="section-title">Multiple Choice Questions (26)</span>
+                        </div>
+                        <i class="fas fa-chevron-down" id="sheet4-mcq-icon"></i>
+                    </button>
+                    
+                    <div class="hidden" id="sheet4-mcq-content">
+                        <!-- MCQ questions will be inserted here by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- True/False Section -->
+                <div class="section tf-section">
+                    <button class="section-header" onclick="toggleSection('sheet4-tf')">
+                        <div class="section-header-left">
+                            <div class="section-icon">T/F</div>
+                            <span class="section-title">True/False Questions (25)</span>
+                        </div>
+                        <i class="fas fa-chevron-down" id="sheet4-tf-icon"></i>
+                    </button>
+                    
+                    <div class="hidden" id="sheet4-tf-content">
+                        <!-- T/F questions will be inserted here by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Written Section -->
+                <div class="section written-section">
+                    <button class="section-header" onclick="toggleSection('sheet4-written')">
+                        <div class="section-header-left">
+                            <div class="section-icon">✍</div>
+                            <span class="section-title">Written Questions (8)</span>
+                        </div>
+                        <i class="fas fa-chevron-down" id="sheet4-written-icon"></i>
+                    </button>
+                    
+                    <div class="hidden" id="sheet4-written-content">
+                        <!-- Written questions will be inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>✅ Sheet 1: Database Systems Fundamentals (48 MCQ + 54 T/F + 3 Written)</p>
+            <p>✅ Sheet 3: Relational Model & SQL (54 MCQ + 49 T/F + 13 Written)</p>
+            <p>✅ Sheet 4: Relational Algebra (26 MCQ + 25 T/F + 8 Written)</p>
+            <p class="note">📚 Sheets 2 and 5 ready to implement next!</p>
+            <p class="note">Complete all questions and check your answers to master Database Systems! 🎯</p>
+        </div>
+    </div>
+
+    <script>
+        // Data - Sheet 1
+        const sheet1MCQ = [
+            { id: 1, q: "What is the primary purpose of a DBMS?", opts: ["To store data as plain files in the operating system", "To assist in maintaining and utilizing large collections of data", "To replace all application software", "To execute user programs without data storage"], ans: 1 },
+            { id: 2, q: "Which of the following is NOT an advantage of using a DBMS?", opts: ["Data independence", "Concurrency control and crash recovery", "Writing ad-hoc application-specific programs for every question", "Reduced development time"], ans: 2 },
+            { id: 3, q: "In the relational model, what is a schema?", opts: ["A specific instance of data in a database", "A template describing the structure of data (tables/relations)", "The physical storage layout on disk", "A type of user interface for querying"], ans: 1 },
+            { id: 4, q: "Which level of abstraction describes the data as stored in the database, including storage details and access paths?", opts: ["External schema", "Conceptual schema", "Physical schema", "Logical schema"], ans: 2 },
+            { id: 5, q: "What does 'data independence' mean in the context of DBMS?", opts: ["Data can be copied independently of applications", "Applications are shielded from changes in data representation and storage", "Data can be freely modified without consistency checks", "Data is independent of security policies"], ans: 1 },
+            { id: 6, q: "Which language is primarily used to define external and conceptual schemas in a relational DBMS?", opts: ["DML (Data Manipulation Language)", "DDL (Data Definition Language)", "SQL for data querying only", "Prolog"], ans: 1 },
+            { id: 7, q: "Which of the following is a valid example of an integrity constraint?", opts: ["A view definition", "Each student must have a unique sid", "A storage engine choice", "A user interface layout"], ans: 1 },
+            { id: 8, q: "The three-level architecture of a DBMS includes:", opts: ["External, Conceptual, and Physical schemas", "Client, Server, and Network layers", "User, Application, and Database layers", "Transaction, Query, and Storage managers"], ans: 0 },
+            { id: 9, q: "What is a transaction in a DBMS?", opts: ["A single read operation", "Any execution of a user program that performs a sequence of read/write operations as a single logical unit", "A backup procedure", "A SQL syntax construct"], ans: 1 },
+            { id: 10, q: "Which principle ensures that the changes of one transaction are not visible to others until they are committed?", opts: ["Cache coherence", "Locking protocol with isolation", "Write-ahead logging", "Checkpointing"], ans: 1 }
+        ];
+
+        const sheet1TrueFalse = [
+            { id: 1, q: "External schemas provide user-specific views of the data and do not describe the entire database structure.", ans: true, correction: "" },
+            { id: 2, q: "The three-level architecture of a DBMS consists of External, Conceptual, and Physical schemas.", ans: true, correction: "" },
+            { id: 3, q: "A transaction in a DBMS is any single read operation on the database.", ans: false, correction: "A transaction is a sequence of read/write operations treated as a single logical unit that must be atomic." },
+            { id: 4, q: "Data independence means applications must be rewritten if the data representation changes.", ans: false, correction: "Data independence means applications are shielded from changes in data representation and storage." },
+            { id: 5, q: "The relational model uses tables (relations), with attributes and constraints.", ans: true, correction: "" }
+        ];
+
+        const sheet1Written = [
+            { id: 1, q: "Explain the difference between logical and physical data independence.", ans: "Logical data independence means that users are shielded from changes in the logical structure of the data, while physical data independence insulates users from changes in the physical storage of the data." },
+            { id: 2, q: "What are the responsibilities of a DBA? If we assume that the DBA is never interested in running his or her own queries, does the DBA still need to understand query optimization? Why?", ans: "The DBA is responsible for: Designing the logical and physical schemas, as well as widely-used portions of the external schema. Security and authorization. Data availability and recovery from failures. Database tuning: The DBA is responsible for evolving the database, in particular the conceptual and physical schemas, to ensure adequate performance as user requirements change. A DBA needs to understand query optimization even if s/he is not interested in running his or her own queries because some of these responsibilities (database design and tuning) are related to query optimization. Unless the DBA understands the performance needs of widely used queries, and how the DBMS will optimize and execute these queries, good design and tuning decisions cannot be made." }
+        ];
+
+        // Data - Sheet 3
+        const sheet3MCQ = [
+            { id: 1, q: "What is the main construct for representing data in the relational model?", opts: ["A key", "A relation", "A view", "An index"], ans: 1 },
+            { id: 2, q: "An instance of a relation is best described as:", opts: ["A set of schemas", "A table of tuples", "A foreign key constraint", "A database"], ans: 1 },
+            { id: 3, q: "In a relation schema, what does a domain refer to?", opts: ["The set of possible tuples", "The name of the relation", "A set of values that a column can take", "The primary key"], ans: 2 },
+            { id: 4, q: "The degree (arity) of a relation is:", opts: ["The number of tuples", "The number of attributes (fields)", "The number of constraints", "The number of relations in the database"], ans: 1 },
+            { id: 5, q: "Which of the following is true about a relation instance?", opts: ["Rows may be identical", "The order of rows is important", "No two rows are identical", "The order of columns is fixed and cannot change"], ans: 2 },
+            { id: 6, q: "In SQL, which statement is used to define a new table?", opts: ["INSERT", "CREATE TABLE", "ALTER TABLE", "DROP TABLE"], ans: 1 },
+            { id: 7, q: "Which SQL clause is used to specify the condition for rows to be modified in an UPDATE?", opts: ["WHERE", "SET", "FROM", "INTO"], ans: 0 },
+            { id: 8, q: "Which constraint ensures that a set of fields uniquely identifies a tuple?", opts: ["Foreign key", "Candidate key", "Domain constraint", "Check constraint"], ans: 1 },
+            { id: 9, q: "How many candidate keys can be designated as a primary key in a table?", opts: ["All candidate keys", "None", "At most one", "Exactly one per foreign key"], ans: 2 },
+            { id: 10, q: "A foreign key constraint:", opts: ["Guarantees a unique value within its own table", "Enforces a relationship to a primary key in another table", "Requires null values only", "Is automatically a primary key"], ans: 1 }
+        ];
+
+        const sheet3TrueFalse = [
+            { id: 1, q: "A relation in the relational model is a set of tuples and does not preserve any particular order of those tuples.", ans: true, correction: "" },
+            { id: 2, q: "In a relation schema, a domain refers to a set of permissible values that an attribute can take.", ans: true, correction: "" },
+            { id: 3, q: "The degree (arity) of a relation is the number of tuples it can contain.", ans: false, correction: "The degree (arity) of a relation is the number of attributes (columns) in a tuple." },
+            { id: 4, q: "In a relation instance, two rows may be identical if they belong to different transactions.", ans: false, correction: "In a relation instance, no two rows are identical (the set semantics forbid exact duplicates)." },
+            { id: 5, q: "SQL uses the INSERT statement to define a new table in the database.", ans: false, correction: "CREATE TABLE (not INSERT) defines a new table. INSERT adds rows to an existing table." }
+        ];
+
+        const sheet3Written = [
+            { id: 1, q: "Define a relation in the relational model. What are its core components?", ans: "A relation is a formal structure consisting of a set of tuples (rows) that share the same attributes (columns). Core components: a heading (schema) with attribute names and domains; a set of tuples; no inherent order of tuples; fixed arity (same number of attributes in every tuple)." },
+            { id: 2, q: "Explain the difference between a relation schema and a relation instance. Give a concrete example.", ans: "A relation schema describes the structure: relation name, attributes, and their domains (e.g., R(A: Int, B: String, C: Date). A relation instance is a particular, current set of tuples conforming to that schema (e.g., R has tuples (1, 'Alice', 2020-01-01), (2, 'Bob', 2020-02-02)). Emphasize that the instance can change over time; the schema remains fixed." }
+        ];
+
+        // Data - Sheet 4
+        const sheet4MCQ = [
+            { id: 1, q: "What is relational algebra primarily used for?", opts: ["Defining data storage formats", "Writing procedural programs", "Designing user interfaces", "Specifying queries in a formal way"], ans: 3 },
+            { id: 2, q: "In relational algebra, what are the inputs and outputs of a query?", opts: ["Tables", "Files", "Relations", "Tuples only"], ans: 2 },
+            { id: 3, q: "Which of the following is a unary operator in relational algebra?", opts: ["Union", "Cross-product", "Selection", "Difference"], ans: 2 },
+            { id: 4, q: "Which of the following is a binary operator in relational algebra?", opts: ["Projection", "Selection", "Union", "Rename"], ans: 2 },
+            { id: 5, q: "Which operators are considered the basic set of relational algebra operators?", opts: ["Selection, projection, union, cross-product, difference", "Intersection, join, division, projection", "Selection, projection, rename, assignment", "Order, grouping, aggregation, projection"], ans: 0 },
+            { id: 6, q: "Which operator would you use to retrieve specific columns from a relation?", opts: ["Selection", "Projection", "Union", "Difference"], ans: 1 },
+            { id: 7, q: "Given a relation S2 with attributes (age, rating, sname, sid), which expression would retrieve sailors with rating > 8?", opts: ["σ(rating > 8)(S2)", "π(sname, rating)(S2)", "S2 ÷ 8", "S2 × S2"], ans: 0 },
+            { id: 8, q: "What does the projection expression πsname, rating(S2) do?", opts: ["Select rows where sname or rating matches", "Compute the sum of sname and rating", "Extract the sname and rating columns", "Rename columns to sname and rating"], ans: 2 },
+            { id: 9, q: "What is the general form of a selection expression?", opts: ["π column list", "R ∪ S", "R × S", "σ condition (Relational expression)"], ans: 3 },
+            { id: 10, q: "Which condition operators are allowed in selection and join conditions?", opts: ["+ and -", "<, <=, =, ≠, >=, >", "AND, OR, NOT", "∑ and ∏"], ans: 1 }
+        ];
+
+        const sheet4TrueFalse = [
+            { id: 1, q: "The output of a relational algebra query is always a single relation.", ans: true, correction: "" },
+            { id: 2, q: "Selection filters rows based on a condition.", ans: true, correction: "" },
+            { id: 3, q: "Projection can duplicate tuples.", ans: false, correction: "Projection removes duplicates." },
+            { id: 4, q: "Union requires union-compatible operands.", ans: true, correction: "" },
+            { id: 5, q: "Cartesian product combines all tuples from both relations.", ans: true, correction: "" }
+        ];
+
+        const sheet4Written = [
+            { id: 1, q: "Given Sailors(SailorID, SName, Rating, Age) and Reserves(SailorID, BoatID, Day), find the names of sailors who have reserved boat with BoatID = 103. Explain each step and provide both RA and SQL solutions.", ans: "Relational Algebra: πSName(σBoatID=103(Reserves) ⨝ Sailors)\n\nSQL: SELECT DISTINCT S.SName FROM Sailors S, Reserves R WHERE S.SailorID = R.SailorID AND R.BoatID = 103;" },
+            { id: 2, q: "Define a relational algebra expression for 'sailors who have reserved every boat' given Boats(BoatID, Color, Length) and Reserves(SailorID, BoatID, Day).", ans: "πSailorID(Sailors) − πSailorID((Sailors × Boats) − Reserves)\n\nOr: πSailorID(Sailors) − πSailorID((Sailors × Boats) − (Reserves ⨝ Sailors))" }
+        ];
+
+        // State management
+        const state = {
+            expandedSheets: { sheet1: true, sheet3: false, sheet4: false },
+            expandedSections: { 'sheet1-mcq': true, 'sheet1-tf': false, 'sheet1-written': false, 'sheet3-mcq': false, 'sheet3-tf': false, 'sheet3-written': false, 'sheet4-mcq': false, 'sheet4-tf': false, 'sheet4-written': false },
+            answers: {},
+            showResults: {}
+        };
+
+        // Toggle sheet visibility
+        function toggleSheet(sheetId) {
+            state.expandedSheets[sheetId] = !state.expandedSheets[sheetId];
+            const content = document.getElementById(`${sheetId}-content`);
+            const icon = document.getElementById(`${sheetId}-icon`);
+            
+            if (state.expandedSheets[sheetId]) {
+                content.classList.remove('hidden');
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-right');
+            }
+        }
+
+        // Toggle section visibility
+        function toggleSection(sectionId) {
+            state.expandedSections[sectionId] = !state.expandedSections[sectionId];
+            const content = document.getElementById(`${sectionId}-content`);
+            const icon = document.getElementById(`${sectionId}-icon`);
+            
+            if (state.expandedSections[sectionId]) {
+                content.classList.remove('hidden');
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-down');
+                
+                // Render questions if not already rendered
+                if (content.children.length === 0) {
+                    renderQuestions(sectionId);
+                }
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-right');
+            }
+        }
+
+        // Handle MCQ answer selection
+        function handleMCQAnswer(sheet, section, questionId, optionIndex) {
+            const key = `${sheet}-${section}-${questionId}`;
+            state.answers[key] = optionIndex;
+            
+            // Update UI
+            const questionElement = document.getElementById(`question-${key}`);
+            const options = questionElement.querySelectorAll('.option');
+            
+            options.forEach((option, idx) => {
+                option.classList.remove('selected');
+                if (idx === optionIndex) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Enable check button
+            const checkBtn = questionElement.querySelector('.check-btn');
+            checkBtn.disabled = false;
+        }
+
+        // Handle True/False answer selection
+        function handleTFAnswer(sheet, section, questionId, value) {
+            const key = `${sheet}-${section}-${questionId}`;
+            state.answers[key] = value;
+            
+            // Update UI
+            const questionElement = document.getElementById(`question-${key}`);
+            const trueOption = questionElement.querySelector('.tf-option.true-option');
+            const falseOption = questionElement.querySelector('.tf-option.false-option');
+            
+            trueOption.classList.remove('selected-true');
+            falseOption.classList.remove('selected-false');
+            
+            if (value === true) {
+                trueOption.classList.add('selected-true');
+            } else {
+                falseOption.classList.add('selected-false');
+            }
+            
+            // Enable check button
+            const checkBtn = questionElement.querySelector('.check-btn');
+            checkBtn.disabled = false;
+        }
+
+        // Handle written answer input
+        function handleWrittenAnswer(sheet, section, questionId, value) {
+            const key = `${sheet}-${section}-${questionId}`;
+            state.answers[key] = value;
+        }
+
+        // Check MCQ answer
+        function checkMCQAnswer(sheet, section, questionId, correctAnswer) {
+            const key = `${sheet}-${section}-${questionId}`;
+            const userAnswer = state.answers[key];
+            state.showResults[key] = true;
+            
+            const questionElement = document.getElementById(`question-${key}`);
+            const options = questionElement.querySelectorAll('.option');
+            const resultDiv = questionElement.querySelector('.result-feedback');
+            const checkBtn = questionElement.querySelector('.check-btn');
+            
+            // Show correct/incorrect styling
+            options.forEach((option, idx) => {
+                option.classList.remove('correct', 'incorrect');
+                
+                if (idx === correctAnswer) {
+                    option.classList.add('correct');
+                } else if (idx === userAnswer && idx !== correctAnswer) {
+                    option.classList.add('incorrect');
+                }
+            });
+            
+            // Show result feedback
+            const isCorrect = userAnswer === correctAnswer;
+            resultDiv.innerHTML = `
+                <i class="fas ${isCorrect ? 'fa-check' : 'fa-times'}"></i>
+                <span>${isCorrect ? 'Correct!' : `Wrong! Correct answer: Option ${correctAnswer + 1}`}</span>
+            `;
+            resultDiv.className = `result-feedback ${isCorrect ? 'correct-feedback' : 'incorrect-feedback'}`;
+            resultDiv.classList.remove('hidden');
+            
+            // Disable check button
+            checkBtn.disabled = true;
+        }
+
+        // Check True/False answer
+        function checkTFAnswer(sheet, section, questionId, correctAnswer) {
+            const key = `${sheet}-${section}-${questionId}`;
+            const userAnswer = state.answers[key];
+            state.showResults[key] = true;
+            
+            const questionElement = document.getElementById(`question-${key}`);
+            const trueOption = questionElement.querySelector('.tf-option.true-option');
+            const falseOption = questionElement.querySelector('.tf-option.false-option');
+            const resultDiv = questionElement.querySelector('.result-feedback');
+            const checkBtn = questionElement.querySelector('.check-btn');
+            
+            // Show correct/incorrect styling
+            trueOption.classList.remove('correct-true', 'incorrect-true');
+            falseOption.classList.remove('correct-false', 'incorrect-false');
+            
+            if (correctAnswer === true) {
+                trueOption.classList.add('correct-true');
+                if (userAnswer === false) {
+                    falseOption.classList.add('incorrect-false');
+                }
+            } else {
+                falseOption.classList.add('correct-false');
+                if (userAnswer === true) {
+                    trueOption.classList.add('incorrect-true');
+                }
+            }
+            
+            // Show result feedback
+            const isCorrect = userAnswer === correctAnswer;
+            resultDiv.innerHTML = `
+                <i class="fas ${isCorrect ? 'fa-check' : 'fa-times'}"></i>
+                <span>${isCorrect ? 'Correct!' : `Wrong! Correct answer: ${correctAnswer ? 'True' : 'False'}`}</span>
+            `;
+            resultDiv.className = `result-feedback ${isCorrect ? 'correct-feedback' : 'incorrect-feedback'}`;
+            resultDiv.classList.remove('hidden');
+            
+            // Show correction if needed
+            const questionData = getQuestionData(sheet, section, questionId);
+            if (!isCorrect && questionData.correction) {
+                const correctionDiv = document.createElement('div');
+                correctionDiv.className = 'correction-box';
+                correctionDiv.innerHTML = `
+                    <div class="correction-title">Correction:</div>
+                    <div>${questionData.correction}</div>
+                `;
+                questionElement.appendChild(correctionDiv);
+            }
+            
+            // Disable check button
+            checkBtn.disabled = true;
+        }
+
+        // Show written solution
+        function showWrittenSolution(sheet, section, questionId) {
+            const key = `${sheet}-${section}-${questionId}`;
+            state.showResults[key] = true;
+            
+            const questionElement = document.getElementById(`question-${key}`);
+            const solutionDiv = questionElement.querySelector('.solution-box');
+            const showBtn = questionElement.querySelector('.show-solution-btn');
+            
+            // Get answer data
+            const questionData = getQuestionData(sheet, section, questionId);
+            
+            // Show solution
+            solutionDiv.innerHTML = `
+                <div class="solution-title">
+                    <i class="fas fa-book-open"></i>
+                    Model Answer:
+                </div>
+                <div class="solution-text">${questionData.ans}</div>
+            `;
+            solutionDiv.classList.remove('hidden');
+            
+            // Hide show button
+            showBtn.classList.add('hidden');
+        }
+
+        // Get question data based on sheet and section
+        function getQuestionData(sheet, section, questionId) {
+            const sectionType = section.split('-')[1];
+            
+            if (sheet === 'sheet1') {
+                if (sectionType === 'mcq') return sheet1MCQ.find(q => q.id === parseInt(questionId));
+                if (sectionType === 'tf') return sheet1TrueFalse.find(q => q.id === parseInt(questionId));
+                if (sectionType === 'written') return sheet1Written.find(q => q.id === parseInt(questionId));
+            } else if (sheet === 'sheet3') {
+                if (sectionType === 'mcq') return sheet3MCQ.find(q => q.id === parseInt(questionId));
+                if (sectionType === 'tf') return sheet3TrueFalse.find(q => q.id === parseInt(questionId));
+                if (sectionType === 'written') return sheet3Written.find(q => q.id === parseInt(questionId));
+            } else if (sheet === 'sheet4') {
+                if (sectionType === 'mcq') return sheet4MCQ.find(q => q.id === parseInt(questionId));
+                if (sectionType === 'tf') return sheet4TrueFalse.find(q => q.id === parseInt(questionId));
+                if (sectionType === 'written') return sheet4Written.find(q => q.id === parseInt(questionId));
+            }
+            
+            return null;
+        }
+
+        // Render questions for a section
+        function renderQuestions(sectionId) {
+            const [sheet, sectionType] = sectionId.split('-');
+            const contentDiv = document.getElementById(`${sectionId}-content`);
+            
+            let questions = [];
+            if (sheet === 'sheet1') {
+                if (sectionType === 'mcq') questions = sheet1MCQ;
+                else if (sectionType === 'tf') questions = sheet1TrueFalse;
+                else if (sectionType === 'written') questions = sheet1Written;
+            } else if (sheet === 'sheet3') {
+                if (sectionType === 'mcq') questions = sheet3MCQ;
+                else if (sectionType === 'tf') questions = sheet3TrueFalse;
+                else if (sectionType === 'written') questions = sheet3Written;
+            } else if (sheet === 'sheet4') {
+                if (sectionType === 'mcq') questions = sheet4MCQ;
+                else if (sectionType === 'tf') questions = sheet4TrueFalse;
+                else if (sectionType === 'written') questions = sheet4Written;
+            }
+            
+            // Render each question
+            questions.forEach(question => {
+                if (sectionType === 'mcq') {
+                    contentDiv.appendChild(renderMCQQuestion(sheet, sectionType, question));
+                } else if (sectionType === 'tf') {
+                    contentDiv.appendChild(renderTFQuestion(sheet, sectionType, question));
+                } else if (sectionType === 'written') {
+                    contentDiv.appendChild(renderWrittenQuestion(sheet, sectionType, question));
+                }
+            });
+        }
+
+        // Render a single MCQ question
+        function renderMCQQuestion(sheet, section, question) {
+            const key = `${sheet}-${section}-${question.id}`;
+            const showResult = state.showResults[key] || false;
+            const userAnswer = state.answers[key];
+            
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-card';
+            questionDiv.id = `question-${key}`;
+            
+            let optionsHTML = '';
+            question.opts.forEach((opt, idx) => {
+                let optionClass = 'option';
+                if (showResult) {
+                    if (idx === question.ans) optionClass += ' correct';
+                    else if (idx === userAnswer && idx !== question.ans) optionClass += ' incorrect';
+                } else if (userAnswer === idx) {
+                    optionClass += ' selected';
+                }
+                
+                optionsHTML += `
+                    <div class="${optionClass}" onclick="handleMCQAnswer('${sheet}', '${section}', ${question.id}, ${idx})">
+                        <input type="radio" name="${key}" ${userAnswer === idx ? 'checked' : ''} ${showResult ? 'disabled' : ''}>
+                        <span>${opt}</span>
+                    </div>
+                `;
+            });
+            
+            questionDiv.innerHTML = `
+                <div class="question-text">Q${question.id}. ${question.q}</div>
+                <div class="options">${optionsHTML}</div>
+                <div class="flex items-center gap-2">
+                    <button class="check-btn" onclick="checkMCQAnswer('${sheet}', '${section}', ${question.id}, ${question.ans})" ${userAnswer === undefined ? 'disabled' : ''}>
+                        Check Answer
+                    </button>
+                    ${showResult ? `
+                        <div class="result-feedback ${userAnswer === question.ans ? 'correct-feedback' : 'incorrect-feedback'}">
+                            <i class="fas ${userAnswer === question.ans ? 'fa-check' : 'fa-times'}"></i>
+                            <span>${userAnswer === question.ans ? 'Correct!' : `Wrong! Correct answer: Option ${question.ans + 1}`}</span>
+                        </div>
+                    ` : '<div class="result-feedback hidden"></div>'}
+                </div>
+            `;
+            
+            return questionDiv;
+        }
+
+        // Render a single True/False question
+        function renderTFQuestion(sheet, section, question) {
+            const key = `${sheet}-${section}-${question.id}`;
+            const showResult = state.showResults[key] || false;
+            const userAnswer = state.answers[key];
+            
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-card';
+            questionDiv.id = `question-${key}`;
+            
+            let trueClass = 'tf-option true-option';
+            let falseClass = 'tf-option false-option';
+            
+            if (showResult) {
+                if (question.ans === true) trueClass += ' correct-true';
+                else falseClass += ' correct-false';
+                
+                if (userAnswer === true && question.ans === false) trueClass += ' incorrect-true';
+                if (userAnswer === false && question.ans === true) falseClass += ' incorrect-false';
+            } else {
+                if (userAnswer === true) trueClass += ' selected-true';
+                if (userAnswer === false) falseClass += ' selected-false';
+            }
+            
+            questionDiv.innerHTML = `
+                <div class="question-text">Q${question.id}. ${question.q}</div>
+                <div class="tf-options">
+                    <div class="${trueClass}" onclick="handleTFAnswer('${sheet}', '${section}', ${question.id}, true)">
+                        <input type="radio" name="${key}-tf" ${userAnswer === true ? 'checked' : ''} ${showResult ? 'disabled' : ''}>
+                        <span>True ✓</span>
+                    </div>
+                    <div class="${falseClass}" onclick="handleTFAnswer('${sheet}', '${section}', ${question.id}, false)">
+                        <input type="radio" name="${key}-tf" ${userAnswer === false ? 'checked' : ''} ${showResult ? 'disabled' : ''}>
+                        <span>False ✗</span>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2">
+                        <button class="check-btn" onclick="checkTFAnswer('${sheet}', '${section}', ${question.id}, ${question.ans})" ${userAnswer === undefined ? 'disabled' : ''}>
+                            Check Answer
+                        </button>
+                        ${showResult ? `
+                            <div class="result-feedback ${userAnswer === question.ans ? 'correct-feedback' : 'incorrect-feedback'}">
+                                <i class="fas ${userAnswer === question.ans ? 'fa-check' : 'fa-times'}"></i>
+                                <span>${userAnswer === question.ans ? 'Correct!' : `Wrong! Correct answer: ${question.ans ? 'True' : 'False'}`}</span>
+                            </div>
+                        ` : '<div class="result-feedback hidden"></div>'}
+                    </div>
+                    ${showResult && !question.ans && question.correction ? `
+                        <div class="correction-box">
+                            <div class="correction-title">Correction:</div>
+                            <div>${question.correction}</div>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+            
+            return questionDiv;
+        }
+
+        // Render a single Written question
+        function renderWrittenQuestion(sheet, section, question) {
+            const key = `${sheet}-${section}-${question.id}`;
+            const showResult = state.showResults[key] || false;
+            const userAnswer = state.answers[key] || '';
+            
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-card';
+            questionDiv.id = `question-${key}`;
+            
+            questionDiv.innerHTML = `
+                <div class="question-text">Q${question.id}. ${question.q}</div>
+                <textarea class="written-answer" placeholder="Write your answer here..." oninput="handleWrittenAnswer('${sheet}', '${section}', ${question.id}, this.value)">${userAnswer}</textarea>
+                <div class="flex flex-col gap-2">
+                    ${!showResult ? `
+                        <button class="show-solution-btn" onclick="showWrittenSolution('${sheet}', '${section}', ${question.id})">
+                            Show Solution
+                        </button>
+                    ` : ''}
+                    ${showResult ? `
+                        <div class="solution-box">
+                            <div class="solution-title">
+                                <i class="fas fa-book-open"></i>
+                                Model Answer:
+                            </div>
+                            <div class="solution-text">${question.ans}</div>
+                        </div>
+                    ` : '<div class="solution-box hidden"></div>'}
+                </div>
+            `;
+            
+            return questionDiv;
+        }
+
+        // Initialize the app
+        function init() {
+            // Set initial expanded state
+            if (state.expandedSheets.sheet1) {
+                document.getElementById('sheet1-content').classList.remove('hidden');
+                document.getElementById('sheet1-icon').classList.add('fa-chevron-down');
+                
+                // Render questions for initially expanded sections
+                if (state.expandedSections['sheet1-mcq']) {
+                    document.getElementById('sheet1-mcq-content').classList.remove('hidden');
+                    document.getElementById('sheet1-mcq-icon').classList.add('fa-chevron-down');
+                    renderQuestions('sheet1-mcq');
+                }
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
